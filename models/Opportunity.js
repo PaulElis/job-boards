@@ -13,6 +13,9 @@ const OpportunitySchema = new mongoose.Schema({
   job_url: {
     type: String,
   },
+  job_source: {
+    type: String,
+  },
 });
 
 module.exports = mongoose.model("Opportunity", OpportunitySchema);

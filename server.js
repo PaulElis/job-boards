@@ -12,22 +12,6 @@ dotenv.config({ path: "./config/config.env" });
 // Connect to DB
 connectDB();
 
-// const csvData = [];
-
-// // Get CSV data
-// fs.createReadStream(__dirname + "/job_opportunities.csv")
-//   .pipe(
-//     parse({
-//       delimiter: ",",
-//     })
-//   )
-//   .on("data", dataRow => {
-//     csvData.push(dataRow);
-//   })
-//   .on("end", () => {
-//     console.log("Success: ", csvData.length, " items in csvData");
-//   });
-
 const app = express();
 
 // Dev logging middleware

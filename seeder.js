@@ -85,6 +85,7 @@ const cleanData = data => {
       obj["job_url"] = obj["Job URL"];
       delete obj["Job URL"];
     }
+    obj["job_source"] = "";
   });
   return data;
 };

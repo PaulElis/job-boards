@@ -1,6 +1,6 @@
 const fs = require("fs");
 const mongoose = require("mongoose");
-// const colors = require("colors");
+const colors = require("colors");
 const dotenv = require("dotenv");
 
 // Load env variables
@@ -29,16 +29,14 @@ const updateJobSource = async (id, body) => {
     new: true,
     runValidators: true,
   });
-  console.log("updatedOpportunity: ", updatedOpportunity);
 };
 
+// Main resolver function
 const resolver = async () => {
   // Load opportunities
-  const allOpportunities = await Opportunity.find({ primary_key: "125846" });
-  console.log("allOpportunities: ", allOpportunities);
+  const allOpportunities = await Opportunity.find();
 
   // Resolve job_source in DB
-  const jobSources = [];
   allOpportunities.forEach(opportunity => {
     let company_name = opportunity["company_name"];
     let url = opportunity["job_url"];
@@ -46,21 +44,24 @@ const resolver = async () => {
     for (let i = 0; i < rootDomains.length; i++) {
       const domain = rootDomains[i];
       // Has no Url
-      if (url === "") continue;
+      if (url === "") break;
       // From JobBoards
       if (url.includes(domain)) {
-        jobSources.push({ job_source: domain });
+        updateJobSource({ _id: opportunity["_id"] }, { job_source: domain });
         break;
         // From Company Website
       } else if (i === rootDomains.length - 1 && url.includes(company_name)) {
-        jobSources.push({ job_source: "Company Website" });
+        updateJobSource(
+          { _id: opportunity["_id"] },
+          { job_source: "Company Website" }
+        );
         // Unknown Job Source
       } else if (i === rootDomains.length - 1 && !url.includes(company_name)) {
-        jobSources.push({ job_source: "Unknown" });
+        updateJobSource({ _id: opportunity["_id"] }, { job_source: "Unknown" });
       }
     }
-    updateJobSource({ _id: opportunity["_id"] }, { job_source: "" });
   });
+  console.log("Job Source data resolved!".green.inverse);
 };
 
 resolver();

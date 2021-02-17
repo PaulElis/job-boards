@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const colors = require("colors");
 const fs = require("fs");
 const connectDB = require("./config/db");
+const cors = require("cors");
 
 // Load env vars
 dotenv.config({ path: "./config/config.env" });
@@ -24,6 +25,9 @@ if (process.env.NODE_ENV === "development") {
 
 // Set static folder
 app.use(express.static(path.join(__dirname, "public")));
+
+// Enable CORS
+app.use(cors());
 
 // Mount routers
 app.use("/opportunities", opportunities);

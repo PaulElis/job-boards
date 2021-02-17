@@ -1,0 +1,13 @@
+.title {
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-align: left;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 25px;
+  row-gap: 25px;
+}

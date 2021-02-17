@@ -1,0 +1,23 @@
+.cardContainer {
+  padding: 10px;
+  width: 24rem;
+  height: 10rem;
+  font-size: 12px;
+}
+
+.cardRating {
+  color: #2eb82e;
+  text-align: right;
+  font-weight: 700;
+  margin-bottom: 5px;
+}
+
+.cardImage {
+  width: 5rem;
+}
+
+.cardBodyContainer {
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  column-gap: 10px;
+}

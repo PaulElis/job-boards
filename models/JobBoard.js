@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const JobBoardSchema = new mongoose.Schema({
-  name: {
+  domain: {
     type: String,
     trim: true,
   },

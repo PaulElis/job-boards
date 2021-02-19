@@ -100,7 +100,7 @@ const createJobBoardsJSONFile = async () => {
 // Create Resolved Job Boards List JSON file
 const outputToJSONFile = jsonObj => {
   fs.writeFileSync(
-    "resolvedJobBoards.json",
+    "./data/resolvedJobBoards.json",
     JSON.stringify(jsonObj),
     "utf-8",
     function (err) {

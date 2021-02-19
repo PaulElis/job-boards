@@ -28,7 +28,7 @@ const createJsonFile = () => {
       console.log("jsonObj: ", jsonObj);
 
       fs.writeFileSync(
-        "output.json",
+        "job_opportunities.json",
         JSON.stringify(jsonObj),
         "utf-8",
         function (err) {
@@ -40,7 +40,9 @@ const createJsonFile = () => {
 
 // Import into DB
 const importData = async () => {
-  let opportunites = JSON.parse(fs.readFileSync("output.json", "utf-8"));
+  let opportunites = JSON.parse(
+    fs.readFileSync("job_opportunities.json", "utf-8")
+  );
   opportunites = cleanData(opportunites);
 
   console.log("parsed opportunites: ", opportunites);
@@ -69,22 +71,22 @@ const deleteData = async () => {
 // Clean up data keys
 const cleanData = data => {
   data.map(obj => {
-    if (obj.hasOwnProperty("ID (primary key)")) {
-      obj["primary_key"] = obj["ID (primary key)"];
-      delete obj["ID (primary key)"];
-    }
-    if (obj.hasOwnProperty("Job Title")) {
-      obj["job_title"] = obj["Job Title"];
-      delete obj["Job Title"];
-    }
-    if (obj.hasOwnProperty("Company Name")) {
-      obj["company_name"] = obj["Company Name"];
-      delete obj["Company Name"];
-    }
-    if (obj.hasOwnProperty("Job URL")) {
-      obj["job_url"] = obj["Job URL"];
-      delete obj["Job URL"];
-    }
+    // if (obj.hasOwnProperty("ID (primary key)")) {
+    obj["primary_key"] = obj["ID (primary key)"].trim();
+    delete obj["ID (primary key)"];
+    // }
+    // if (obj.hasOwnProperty("Job Title")) {
+    obj["job_title"] = obj["Job Title"].trim();
+    delete obj["Job Title"];
+    // }
+    // if (obj.hasOwnProperty("Company Name")) {
+    obj["company_name"] = obj["Company Name"].trim();
+    delete obj["Company Name"];
+    // }
+    // if (obj.hasOwnProperty("Job URL")) {
+    obj["job_url"] = obj["Job URL"].trim();
+    delete obj["Job URL"];
+    // }
     obj["job_source"] = "";
   });
   return data;

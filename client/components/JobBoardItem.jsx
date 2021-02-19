@@ -1,23 +1,25 @@
 import React from "react";
 import { Card } from "react-bootstrap";
 import JobBoardItemStyles from "../styles/JobBoardItem.module.css";
+import Link from "next/link";
 
-const JobBoardItem = ({ jobBoard }) => {
-  const { rating, logo_file, description } = jobBoard;
+const JobBoardItem = ({ jobBoard, opportunities }) => {
+  const { container, ratingStyle, bodyContainer, image } = JobBoardItemStyles;
+  const { name, rating, logo_file, description } = jobBoard;
   return (
-    <div>
-      <Card className={JobBoardItemStyles.cardContainer}>
-        <div className={JobBoardItemStyles.cardRating}>{rating}</div>
-        <div className={JobBoardItemStyles.cardBodyContainer}>
-          <img
-            src={logo_file}
-            alt="oh no!"
-            className={JobBoardItemStyles.cardImage}
-          />
+    <Link
+      key={name}
+      href="/job_board/[id]"
+      as={`/job_board/${name.split(" ").join("-")}`}
+    >
+      <Card className={container}>
+        <div className={ratingStyle}>{rating}</div>
+        <div className={bodyContainer}>
+          <img src={logo_file} alt="oh no!" className={image} />
           <Card.Text>{description}</Card.Text>
         </div>
       </Card>
-    </div>
+    </Link>
   );
 };
 

@@ -5,8 +5,8 @@ import JobBoardsList from "../../jobBoards.json";
 import JobBoardsStyles from "../styles/JobBoards.module.css";
 
 const JobBoards = () => {
+  const { title, container, loading } = JobBoardsStyles;
   const [isLoading, setLoading] = useState(true);
-
   const [opportunities, setOpportunities] = useState([]);
 
   const getOpportunities = async () => {
@@ -23,17 +23,23 @@ const JobBoards = () => {
   }, []);
 
   if (isLoading) {
-    return <div className="App">Loading...</div>;
+    return <div className={loading}>Loading...</div>;
   }
 
-  const renderJobBoards = JobBoardsList.map(jobBoard => {
-    return <JobBoardItem jobBoard={jobBoard} key={jobBoard.name} />;
+  const renderJobBoards = JobBoardsList.map((jobBoard, index) => {
+    return (
+      <JobBoardItem
+        jobBoard={jobBoard}
+        key={index}
+        opportunities={opportunities}
+      />
+    );
   });
 
   return (
     <>
-      <div className={JobBoardsStyles.title}>Job Boards</div>
-      <div className={JobBoardsStyles.container}>{renderJobBoards}</div>
+      <div className={title}>Job Boards</div>
+      <div className={container}>{renderJobBoards}</div>
     </>
   );
 };

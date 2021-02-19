@@ -21,7 +21,7 @@ mongoose.connect(process.env.MONGO_URI, {
 });
 
 // Create JSON file
-const createJsonFile = () => {
+const createOpportunitiesJsonFile = () => {
   csvtojson()
     .fromFile(csvfilepath)
     .then(jsonObj => {
@@ -38,8 +38,8 @@ const createJsonFile = () => {
     });
 };
 
-// Import into DB
-const importData = async () => {
+// Import opportunities into DB
+const importOpportunitiesData = async () => {
   let opportunites = JSON.parse(
     fs.readFileSync("job_opportunities.json", "utf-8")
   );
@@ -48,6 +48,24 @@ const importData = async () => {
   console.log("parsed opportunites: ", opportunites);
   try {
     await Opportunity.create(opportunites);
+
+    console.log("Data imported...".green.inverse);
+    process.exit();
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+// Import resolved job boards into DB
+const importJobBoardsData = async () => {
+  let resolvedJobBoards = JSON.parse(
+    fs.readFileSync("resolvedJobBoards.json", "utf-8")
+  );
+  // resolvedJobBoards = cleanData(resolvedJobBoards);
+
+  console.log("parsed resolvedJobBoards: ", resolvedJobBoards);
+  try {
+    await JobBoard.create(resolvedJobBoards);
 
     console.log("Data imported...".green.inverse);
     process.exit();
@@ -93,9 +111,11 @@ const cleanData = data => {
 };
 
 if (process.argv[2] === "-i") {
-  importData();
+  importOpportunitiesData();
 } else if (process.argv[2] === "-d") {
   deleteData();
 } else if (process.argv[2] === "-c") {
-  createJsonFile();
+  createOpportunitiesJsonFile();
+} else if (process.argv[2] === "-j") {
+  importJobBoardsData();
 }

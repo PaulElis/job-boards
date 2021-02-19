@@ -30,7 +30,8 @@ const createJobBoardsJSONFile = async () => {
   // Create local list to populate JSON file
   const resolvedJobBoardsList = rootDomains.map(domain => {
     return {
-      [domain]: 0,
+      domain,
+      count: 0,
       data: [],
     };
   });
@@ -38,11 +39,13 @@ const createJobBoardsJSONFile = async () => {
   // Add Company Website and Unknown properties to local list
   resolvedJobBoardsList.push(
     {
-      "Company Website": 0,
+      domain: "Company Website",
+      count: 0,
       data: [],
     },
     {
-      Unknown: 0,
+      domain: "Unknown",
+      count: 0,
       data: [],
     }
   );
@@ -52,11 +55,11 @@ const createJobBoardsJSONFile = async () => {
     const opportunityDomain = opportunity.job_source;
 
     const foundResolvedJobBoard = resolvedJobBoardsList.find(jobBoard => {
-      return Object.keys(jobBoard)[0] === opportunityDomain;
+      return jobBoard.domain === opportunityDomain;
     });
 
     if (foundResolvedJobBoard) {
-      foundResolvedJobBoard[opportunityDomain]++;
+      foundResolvedJobBoard.count++;
       foundResolvedJobBoard.data.push(opportunity);
     }
   };
@@ -83,7 +86,14 @@ const createJobBoardsJSONFile = async () => {
       }
     }
   });
-  console.log("resolvedJobBoardsList: ", resolvedJobBoardsList);
+
+  resolvedJobBoardsList.forEach(jobBoard => {
+    jobBoard.data.sort((a, b) => {
+      return a.primary_key - b.primary_key;
+    });
+  });
+
+  console.log("resolvedJobBoardsList.json: ", resolvedJobBoardsList);
   outputToJSONFile(resolvedJobBoardsList);
 };
 

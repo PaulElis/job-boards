@@ -1,36 +1,42 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import JobBoardsTable from "../../../components/JobBoardsTable";
+import JobBoardIndexStyles from "../../../styles/JobBoardIndex.module.css";
 
 const index = props => {
   const router = useRouter();
-  // let id = parseInt(router.asPath.substring(6));
-  //   console.log("jobBoard: ", jobBoard);
+  const { loading } = JobBoardIndexStyles;
+  const [isLoading, setLoading] = useState(true);
+  const [jobBoards, setJobBoards] = useState([]);
 
-  //   const jobs = opportunities.filter(opportunity => {
-  //     return opportunity.job_source === jobBoard.root_domain;
-  //   });
+  const getResolvedJobBoards = async () => {
+    const jobBoards = await axios.get("http://localhost:5000/job-boards");
+    setJobBoards(jobBoards.data.data);
+    setLoading(false);
+  };
 
-  //   console.log("jobs: ", jobs);
+  useEffect(() => {
+    getResolvedJobBoards();
+  }, []);
+
+  if (isLoading) {
+    return <div className={loading}>Loading...</div>;
+  }
+
+  const foundJobBoard = jobBoards.find(jobBoard => {
+    return jobBoard.domain === router.query.id;
+  });
+
   console.log("props: ", props);
-  console.log("router: ", router);
-  return <div>{/* <JobBoardsTable /> */}</div>;
+  console.log("router.query.id: ", router.query.id);
+  console.log("jobBoards: ", jobBoards);
+
+  return (
+    <div>
+      <JobBoardsTable foundJobBoard={foundJobBoard} />
+    </div>
+  );
 };
 
 export default index;
-
-// export async function getStaticProps(context) {
-//   const res = await fetch(`https://.../data`);
-//   const data = await res.json();
-
-//   if (!data) {
-//     return {
-//       notFound: true,
-//     };
-//   }
-
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   };
-// }

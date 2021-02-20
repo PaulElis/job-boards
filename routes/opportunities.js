@@ -1,8 +1,5 @@
 const express = require("express");
-const { getOpportunities } = require("../controllers/Opportunities");
-
-const Opportunity = require("../models/Opportunity");
-
+const { getOpportunities } = require("../controllers/opportunities");
 const router = express.Router();
 
 router.route("/").get(getOpportunities);

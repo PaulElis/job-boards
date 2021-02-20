@@ -3,14 +3,14 @@ import { Card } from "react-bootstrap";
 import JobBoardItemStyles from "../styles/JobBoardItem.module.css";
 import Link from "next/link";
 
-const JobBoardItem = ({ jobBoard, opportunities }) => {
+const JobBoardItem = ({ jobBoard }) => {
   const { container, ratingStyle, bodyContainer, image } = JobBoardItemStyles;
-  const { name, rating, logo_file, description } = jobBoard;
+  const { name, rating, logo_file, description, root_domain } = jobBoard;
   return (
     <Link
       key={name}
       href="/job_board/[id]"
-      as={`/job_board/${name.split(" ").join("-")}`}
+      as={`/job_board/${root_domain.split(" ").join("-")}`}
     >
       <Card className={container}>
         <div className={ratingStyle}>{rating}</div>

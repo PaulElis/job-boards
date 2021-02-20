@@ -15,6 +15,7 @@ connectDB();
 
 // Route files
 const opportunities = require("./routes/opportunities");
+const jobBoards = require("./routes/jobBoards");
 
 const app = express();
 
@@ -30,6 +31,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use(cors());
 
 // Mount routers
+app.use("/job-boards", jobBoards);
 app.use("/opportunities", opportunities);
 
 const PORT = process.env.PORT || 5000;
